@@ -1,1 +1,2 @@
 # recommendationSystem-frontend
+licenta
