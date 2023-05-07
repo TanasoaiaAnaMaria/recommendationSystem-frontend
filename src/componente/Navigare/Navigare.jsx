@@ -110,7 +110,7 @@ const Navigare = (props) => {
                         <div className={styles.profile}>
                           <div className={styles.photoDiv}>
                             <img
-                              src={user?.photo}
+                              src={user?.imagine}
                               alt=""
                               className={`${styles.userPhoto} text-white`}
                             />

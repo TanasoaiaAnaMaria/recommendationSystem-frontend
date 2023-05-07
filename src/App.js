@@ -15,9 +15,12 @@ import PaginaPrincipala from "./pagini/PaginaPrincipala/PaginaPrincipala.jsx";
 import Onboarding from "./pagini/Onboarding/Onboarding";
 
 import useWindowDimensions from "./hooks/useWindowDimensions";
+import Alert from "./componente/Alert/Alert";
+import useStateProvider from "./hooks/useStateProvider";
 
 function App() {
   const { width } = useWindowDimensions();
+  const { alert } = useStateProvider();
   return (
     <Router>
       <Routes>
@@ -52,6 +55,7 @@ function App() {
           <Route path="/reset-password" element={<Onboarding />} />
         </Route>
       </Routes>
+      {alert && <Alert message={alert.message} type={alert.type} />}
     </Router>
   );
 }

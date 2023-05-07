@@ -23,8 +23,6 @@ const Onboarding = () => {
             className={style.logoImageOnboarding}
             alt="Login Logo"
           /> */}
-          <br />
-          <br />
 
           {location === "/login" && <LoginForm />}
           {location === "/register" && <RegisterForm />}

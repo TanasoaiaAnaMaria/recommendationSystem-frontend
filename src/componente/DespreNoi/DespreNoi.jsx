@@ -32,9 +32,9 @@ const DespreNoi = () => {
         <img src={imageUrl} alt="Image" />
       </div>
       <Row xs={1} md={2} className="g-4">
-        {data.map((item) => (
+        {data.map((item,index) => (
           <CardDespreNoi className={`${styles.spatiuCards}`}
-            key={item.title}
+            key={item.title+"-"+index}
             title={item.title}
             description={item.description}
           />
