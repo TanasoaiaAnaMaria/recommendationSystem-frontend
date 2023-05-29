@@ -12,9 +12,8 @@ import { Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as Logout } from "../../assets/icons/logout.svg";
 
-
 const NavBarStyled = styled.div`
-  background-color: #004643; 
+  background-color: #004643;
   width: 100%;
   height: 100%;
   margin-top: -8px;
@@ -30,15 +29,15 @@ const Navigare = (props) => {
     navigate("/");
   };
   return (
-    <Navbar
-      key={props.expand}
-      sticky="top"
-      expand={props.expand}
-      
-    >
+    <Navbar key={props.expand} sticky="top" expand={props.expand}>
       <NavBarStyled>
-        <Container fluid className='d-flex align-items-center justify-content-between'>
-          <Navbar.Brand href="/" className="text-white">Travel</Navbar.Brand>
+        <Container
+          fluid
+          className="d-flex align-items-center justify-content-between"
+        >
+          <Navbar.Brand href="/" className="text-white">
+            Travel
+          </Navbar.Brand>
           <Navbar.Toggle
             aria-controls={`offcanvasNavbar-expand-${props.expand}`}
           />
@@ -52,20 +51,19 @@ const Navigare = (props) => {
                 <Offcanvas.Title
                   id={`offcanvasNavbarLabel-expand-${props.expand}`}
                 >
-                  <Nav.Link href="/" className="text-white">Travel</Nav.Link>
+                  <Nav.Link href="/" className="text-white">
+                    Travel
+                  </Nav.Link>
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body className={styles.bodyNav}>
                 <Nav
                   className={`justify-content-end flex-grow-1 pe-3 p-2 d-flex align-items-center`}
                 >
-                  <Nav.Link
-                    className={`text-white ${styles.onHover}`}
-                    href="/"
-                  >
+                  <Nav.Link className={`text-white ${styles.onHover}`} href="/">
                     Acasa
                   </Nav.Link>
-                  <NavDropdown
+                  {/* <NavDropdown
                     title={<span className="text-white">Descriere</span>}
                     className={` ${styles.onHover}`}
                     id={`offcanvasNavbarDropdown-expand-${props.expand}`}
@@ -90,16 +88,16 @@ const Navigare = (props) => {
                     >
                       Viziune
                     </NavDropdown.Item>
-                  </NavDropdown>
+                  </NavDropdown> */}
                   <Nav.Link
-                      className={`${styles.hello} text-white`}
-                    href="/personal"
+                    className={`${styles.hello} text-white`}
+                    href="/descopera"
                   >
                     Descopera
                   </Nav.Link>
                   {!user ? (
                     <Nav.Link
-                    className={`${styles.hello} text-white`}
+                      className={`${styles.hello} text-white`}
                       href="/login"
                     >
                       Conectare
@@ -121,8 +119,22 @@ const Navigare = (props) => {
                       className={`${styles.profileTitle} `}
                       id={`offcanvasNavbarDropdown-expand-${props.expand}`}
                     >
-                      <NavDropdown.Item className={styles.hello}>
+                      {/* <NavDropdown.Item className={styles.hello}>
                         {"Hello, " + user.prenume}
+                      </NavDropdown.Item> */}
+
+                      <NavDropdown.Item
+                        className={`${styles.hello}`}
+                        href="/profilulMeu/profil"
+                      >
+                        Profil
+                      </NavDropdown.Item>
+
+                      <NavDropdown.Item
+                        className={`${styles.hello}`}
+                        href="/profilulMeu/securitate"
+                      >
+                        Securitate
                       </NavDropdown.Item>
 
                       <NavDropdown.Divider />

@@ -14,7 +14,7 @@ axios.defaults.headers = {
 
 export const getPersoanaDupaId = async (id) => {
   try {
-    const response = await axios.get("/persoana/" + id);
+    const response = await axios.get("/persoana/get/" + id);
     return response;
   } catch (error) {
     console.error(error);
@@ -25,18 +25,50 @@ export const getPersoanaDupaId = async (id) => {
 // login  authenticate
 export const login = async (email, password) => {
   try {
-    const response = await axios.get("/persoana/autentificare?email="+email+"&parola="+password);
+    const response = await axios.get(
+      "/persoana/autentificare?email=" + email + "&parola=" + password
+    );
     return response;
   } catch (error) {
     console.log(error);
   }
 };
 
-
 // register
 export const register = async (data) => {
   try {
-    const response = await axios.post("/persoana/inregistrare?nume="+data.nume+"&prenume="+data.prenume+"&email=" + data.email + "&parola=" + data.parola
+    const response = await axios.post(
+      "/persoana/inregistrare?nume=" +
+        data.nume +
+        "&prenume=" +
+        data.prenume +
+        "&email=" +
+        data.email +
+        "&parola=" +
+        data.parola
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// updateUser
+export const updateUser = async (data,preferinte) => {
+  try {
+    const response = await axios.put(
+      "/persoana/update/" +
+        data.id +
+        "?nume=" +
+        data.nume +
+        "&prenume=" +
+        data.prenume +
+        "&email=" +
+        data.email +
+        "&parola=" +
+        data.parola+
+        "&preferinte="+
+        preferinte
     );
     return response;
   } catch (error) {

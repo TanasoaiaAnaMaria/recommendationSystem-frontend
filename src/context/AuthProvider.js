@@ -3,13 +3,14 @@ import { getPersoanaDupaId } from "../api/API";
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   // user
   const [user, setUser] = useState(null);
   const userID =
     rememberMe || !!localStorage.getItem("userID")
       ? localStorage.getItem("userID")
       : sessionStorage.getItem("userID");
+
   const fetchUser = async () => {
     try {
       if (userID == null) {
@@ -34,6 +35,7 @@ export const AuthProvider = ({ children }) => {
   function logout() {
     sessionStorage.clear();
     setRememberMe(false);
+    sessionStorage.removeItem("userID");
     localStorage.removeItem("userID");
     setUser(null);
   }
@@ -51,8 +53,10 @@ export const AuthProvider = ({ children }) => {
         isLoggedIn,
         user,
         setUser,
+        userID,
         rememberMe,
         setRememberMe,
+        fetchUser,
       }}
     >
       {children}

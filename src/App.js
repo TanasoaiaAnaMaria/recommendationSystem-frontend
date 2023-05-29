@@ -13,10 +13,12 @@ import Subsol from "./componente/Subsol/Subsol.jsx";
 
 import PaginaPrincipala from "./pagini/PaginaPrincipala/PaginaPrincipala.jsx";
 import Onboarding from "./pagini/Onboarding/Onboarding";
+import ProfilulMeu from "./pagini/ProfilulMeu/ProfilulMeu"
 
 import useWindowDimensions from "./hooks/useWindowDimensions";
 import Alert from "./componente/Alert/Alert";
 import useStateProvider from "./hooks/useStateProvider";
+import Descopera from "./pagini/Descopera/Descopera";
 
 function App() {
   const { width } = useWindowDimensions();
@@ -34,6 +36,11 @@ function App() {
           }
         >
           {/* protected routes */}
+          <Route path="/profilulMeu">
+            <Route path="profil" element={<ProfilulMeu />} />
+            <Route path="securitate" element={<ProfilulMeu />} />
+            <Route path="preferinte" element={<ProfilulMeu />} />
+          </Route>
         </Route>
 
         <Route
@@ -47,6 +54,7 @@ function App() {
         >
           {/* public rute */}
           <Route path="/" element={<PaginaPrincipala />} />
+          <Route path="/descopera" element={<Descopera />} />
 
           {/* onboarding routes */}
           <Route path="/login" element={<Onboarding />} />

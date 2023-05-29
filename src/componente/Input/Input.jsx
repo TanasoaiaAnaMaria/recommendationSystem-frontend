@@ -18,6 +18,7 @@ const Input = ({
   value,
   helper,
   disabled,
+  checked,
 }) => {
   return (
     <div className={`${styles.container} ${error && styles.error}`}>
@@ -33,6 +34,7 @@ const Input = ({
         placeholder={placeholder}
         className={error ? styles.error : null}
         type={type}
+        checked={checked}
       />
       <span
         onClick={onIconClick}

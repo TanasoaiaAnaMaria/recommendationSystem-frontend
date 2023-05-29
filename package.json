@@ -16,6 +16,7 @@
     "date-fns": "^2.30.0",
     "framer-motion": "^10.11.5",
     "mdb-react-ui-kit": "^6.0.0",
+    "moment": "^2.29.4",
     "node": "^19.8.1",
     "node-sass": "^7.0.3",
     "prop-types": "^15.8.1",

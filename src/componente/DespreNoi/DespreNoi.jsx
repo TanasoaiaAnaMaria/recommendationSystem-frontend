@@ -1,8 +1,8 @@
 import React from "react";
 
-import styles from ".//DespreNoi.module.scss";
+import styles from "./DespreNoi.module.scss";
 import Row from "react-bootstrap/Row";
-import CardDespreNoi from ".//CardDespreNoi";
+import CardDespreNoi from "./CardDespreNoi";
 
 import imageUrl from '../../assets/imagini/despreNoi.svg'
 

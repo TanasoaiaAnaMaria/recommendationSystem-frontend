@@ -25,7 +25,7 @@ const LoginForm = () => {
   const [passwordShown, setPasswordShown] = useState(true);
 
   // form values
-  const [email, setEmail] = useState("ana.tanasoaia@test.com");
+  const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
 
   // error states
@@ -132,11 +132,16 @@ const LoginForm = () => {
         </div>
 
         <div className={style.rememberMe}>
-          <div className={style.checkBox}>
+          <div
+            className={style.checkBox}
+            type="button"
+            onClick={(e) => setRememberMe(!rememberMe)}
+          >
             <Input
               type="checkbox"
               label=""
               value={rememberMe}
+              checked={rememberMe}
               onClick={(e) => setRememberMe(!rememberMe)}
             />
             <p className={style.textRememberMe}>Remember me</p>
