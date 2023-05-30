@@ -1,0 +1,40 @@
+@import "../../../styles/variables.scss";
+
+.title {
+  font-size: $font-h4;
+  font-weight: $font-bold;
+  color: $color-black;
+  margin-bottom: 32px;
+}
+
+.subtitle {
+  font-size: $font-h5;
+  font-weight: $font-bold;
+  color: $color-black;
+  margin-bottom: 28px;
+  margin-top: 32px;
+}
+
+.form {
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 25rem;
+
+  button {
+    width: fit-content;
+  }
+}
+
+.deactivate {
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 25rem;
+
+  > p {
+    color: $color-gray-600;
+  }
+
+  button {
+    width: fit-content;
+  }
+}

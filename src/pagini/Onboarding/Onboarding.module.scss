@@ -1,0 +1,66 @@
+@import "../../styles/variables.scss";
+
+.mainContainer{
+    max-height:900px;
+    min-height: 50rem;
+    min-width: 13rem;
+    display: flex;
+    margin-top: -8px;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.leftSide{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rightSide{
+    height: 100%;
+    width: 50%;
+    min-height: 50rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contentContainer{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15% 0;
+}
+
+.logoImageOnboarding{
+    // position: absolute;
+    width: 101px;
+    height: 30.77px;
+    left: 281px;
+    top: 274px;
+}
+.rightImageOnboarding{
+    height: auto;
+    width: 50vw;
+}
+
+@media (max-width : 550px){
+    .leftSide{
+        width:100%;
+    }
+    .rightImageOnboarding{
+        display: none;
+    }
+    .logoImageOnboarding{
+        margin-left:30%;
+
+    }
+}
