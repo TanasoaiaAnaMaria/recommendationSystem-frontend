@@ -2,7 +2,7 @@ import React from "react";
 
 import Banner from "../../componente/Banner/Banner.jsx";
 import DespreNoi from "../../componente/DespreNoi/DespreNoi.jsx";
-import MapContainer from "../../componente/Harta/MapContainer .jsx";
+import MapContainer from "../../componente/Harta/MapContainer.jsx";
 
 import styles from './PaginaPrincipala.module.scss';
 

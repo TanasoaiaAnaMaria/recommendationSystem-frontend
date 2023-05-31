@@ -136,6 +136,13 @@ const Navigare = (props) => {
                       >
                         Securitate
                       </NavDropdown.Item>
+                      
+                      <NavDropdown.Item
+                        className={`${styles.hello}`}
+                        href="/profilulMeu/preferinte"
+                      >
+                        Preferinte
+                      </NavDropdown.Item>
 
                       <NavDropdown.Divider />
 
