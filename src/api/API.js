@@ -75,3 +75,41 @@ export const updateUser = async (data,preferinte) => {
     console.log(error);
   }
 };
+
+// new
+
+export const getPlacesByID = async (id, lat, lng, radius, params) => {
+  try {
+    const response = await axios.get("/places/search/" + id + '/' + lat + '/' + lng + '/' + radius + '/' + params );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getPredictiePersoanaByID = async (id, lat, lng) => {
+  try {
+    const response = await axios.get("/persoana/predictie/" + id + '?latitudine=' + lat + '&longitudine=' + lng );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getGeocodingOfAddress = async (address) => {
+  try {
+    const response = await axios.get("/geocoding/geocode/" + address );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getNameOfAddress = async (lat, lng) => {
+  try {
+    const response = await axios.get("/location/name/" + lat + "/" + lng );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};

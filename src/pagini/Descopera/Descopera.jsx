@@ -2,48 +2,112 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import Geolocation from 'react-native-geolocation-service';
 
 import Harta from "../../componente/Harta/Harta";
 import useAuth from "../../hooks/useAuth";
 import styles from "./Descopera.module.scss";
-import MapContainer from "../../componente/Harta/MapContainer ";
+import MapContainer from "../../componente/Harta/MapContainer";
 import MeniuCautare from "../../componente/Harta/MeniuCautare";
+import { getGeocodingOfAddress, getPlacesByID, getPredictiePersoanaByID } from "../../api/API";
+
 
 const Descopera = () => {
   const center = { lat: 47.63333, lng: 26.25 };
-  const { user, userID,isLoggedIn } = useAuth();
+  const { user, userID, isLoggedIn } = useAuth();
   const [currentLocation, setCurrentLocation] = useState({
     lat: 47.6468952302915,
     lng: 26.2429388802915,
-  });
+  }); 
+  const [predictLocaion, setPredictLocation] = useState("");
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const navigate = useNavigate();
   // how to create an useEffect which will update the latitude and longitude every 5 seconds?
 
+  // const fetch = require('node-fetch');
+  const apiKey = 'AIzaSyDyOZeonUAedGzg_bJDtDWZX0gK3nd5E88';
   useEffect(() => {
     setInterval(() => {
-      if (user?.preferinte !== null) {
-        console.log("This will run after 12 seconds!");
+      // if (user?.preferinte !== null) {
+      //   console.log("This will run after 10 seconds!");
 
-        if (navigator.geolocation) {
-          navigator.geolocation.watchPosition(
-            (position) => {
-              const { latitude, longitude } = position.coords;
-              setCurrentLocation({ lat: latitude, lng: longitude });
-              console.log({ lat: latitude, lng: longitude });
-            },
-            (error) => {
-              console.error("Error getting user location:", error);
-            }
-          );
-        } else {
-          console.log("Geolocation is not supported by this browser.");
-        }
-      }
-    }, 1000);
+      //   if (navigator.geolocation) {
+      //     navigator.geolocation.watchPosition(
+      //       (position) => {
+      //         const { latitude, longitude } = position.coords;
+      //         setCurrentLocation({ lat: latitude, lng: longitude });
+      //         console.log({ lat: latitude, lng: longitude });
+      //       },
+      //       (error) => {
+      //         console.error("Error getting user location:", error);
+      //       }
+      //     );
+      //   } else {
+      //     console.log("Geolocation is not supported by this browser.");
+      //   }
+      // }
+
+      Geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setCurrentLocation({ lat: latitude, lng: longitude });
+          console.log({ lat: latitude, lng: longitude });
+        },
+        (error) => {
+          console.error("Error getting current location:", error);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      );
+
+      // async function getCurrentLocation() {
+      //   const ipAddressResponse = await fetch('https://api.ipify.org?format=json');
+      //   const { ip } = await ipAddressResponse.json();
+      
+      //   const locationResponse = await fetch(`https://geoipify.whoisxmlapi.com/api/v1?apiKey=${apiKey}&ip=${ip}`);
+      //   const { location } = await locationResponse.json();
+      
+      //   console.log('Current location:', location);
+      // }
+      
+
+
+    }, 10000);
     //   return () => clearInterval(timer);
   }, []);
+
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     if (user?.preferinte !== null) {
+  //       console.log("This will run after 10 seconds!");
+  
+  //       if (navigator.geolocation) {
+  //         const positionOptions = {
+  //           enableHighAccuracy: true,
+  //           timeout: 10000,
+  //           maximumAge: 0,
+  //           travelMode: 'walking'
+  //         };
+  
+  //         navigator.geolocation.watchPosition(
+  //           (position) => {
+  //             const { latitude, longitude } = position.coords;
+  //             setCurrentLocation({ lat: latitude, lng: longitude });
+  //             console.log({ lat: latitude, lng: longitude });
+  //           },
+  //           (error) => {
+  //             console.error("Error getting user location:", error);
+  //           },
+  //           positionOptions
+  //         );
+  //       } else {
+  //         console.log("Geolocation is not supported by this browser.");
+  //       }
+  //     }
+  //   }, 10000);
+  //   //   return () => clearInterval(timer);
+  // }, []);
+  
 
   useEffect(() => {
     if (user?.preferinte.length < 1) {
@@ -58,7 +122,6 @@ const Descopera = () => {
       setShowModal1(true);
     }
   }, [userID]);
-
 
   const handleCloseModal1 = () => {
     setShowModal1(false);
@@ -81,18 +144,54 @@ const Descopera = () => {
     setShowModal2(false);
     navigate("/register");
   };
+
+  const predict = async() =>{
+    try {
+      const resp1 = await getPlacesByID(user.id, currentLocation.lat, currentLocation.lng, 500, user.preferinte)
+      if(resp1.status === 200)
+      {
+        console.log(resp1);
+        try {
+          const resp2 = await getPredictiePersoanaByID(user.id, currentLocation.lat, currentLocation.lng)
+          if(resp2.status === 200)
+          {
+            console.log(resp2);
+            try {
+              const resp3 = await getGeocodingOfAddress(resp2.data + " Romania")
+              if(resp3.status === 200)
+              {
+                console.log(resp3);
+                // setPredictLocation(resp3.data[0].geometry.location)
+                setPredictLocation(resp3.data.results[0].formatted_address)
+                console.log(resp3.data.results[0].formatted_address)
+                
+              }
+            } catch (error) {
+              
+            }
+          }
+        } catch (error) {
+          
+        }
+      }
+    } catch (error) {
+      
+    }
+  }
+
   return (
     <div className={styles.descoperaContainer}>
       {user !== null ? (
         <>
-          {user?.preferinte.length > 0? (
+          {user?.preferinte.length > 0 ? (
             <>
-            <MapContainer
-              center={currentLocation}
-              zoom={15}
-              currentLocation={currentLocation}
-            />
-            {/* <MeniuCautare/> */}
+              <MapContainer
+                center={currentLocation}
+                zoom={15}
+                currentLocation={currentLocation}
+                predict={predict}
+                predictLocation={predictLocaion}
+              />
             </>
           ) : (
             <>
