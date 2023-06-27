@@ -2,77 +2,66 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from "react-native-geolocation-service";
 
 import Harta from "../../componente/Harta/Harta";
 import useAuth from "../../hooks/useAuth";
 import styles from "./Descopera.module.scss";
 import MapContainer from "../../componente/Harta/MapContainer";
 import MeniuCautare from "../../componente/Harta/MeniuCautare";
-import { getGeocodingOfAddress, getPlacesByID, getPredictiePersoanaByID } from "../../api/API";
-
+import {
+  getGeocodingOfAddress,
+  getPlacesByID,
+  getPredictiePersoanaByID,
+  putScoateUnLocDinPreditcie,
+} from "../../api/API";
+import useStateProvider from "../../hooks/useStateProvider";
 
 const Descopera = () => {
   const center = { lat: 47.63333, lng: 26.25 };
   const { user, userID, isLoggedIn } = useAuth();
+  const { listaPreferintePrioritizate, setListaPreferintePrioritizate} = useStateProvider();
   const [currentLocation, setCurrentLocation] = useState({
-    lat: 47.6468952302915,
-    lng: 26.2429388802915,
-  }); 
-  const [predictLocaion, setPredictLocation] = useState("");
+    lat: 47.64592192553534,
+    lng: 26.241071867666925,
+  });
+  const [predictLocation, setPredictLocation] = useState("");
+  const [predictLocationPoze, setPredictLocationPoze] = useState("");
+
+  const [predictieIgnorata, setPredictieIgnorata] = useState("");
+
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
   const navigate = useNavigate();
+
   // how to create an useEffect which will update the latitude and longitude every 5 seconds?
 
   // const fetch = require('node-fetch');
-  const apiKey = 'AIzaSyDyOZeonUAedGzg_bJDtDWZX0gK3nd5E88';
+  const apiKey = "AIzaSyDyOZeonUAedGzg_bJDtDWZX0gK3nd5E88";
   useEffect(() => {
     setInterval(() => {
-      // if (user?.preferinte !== null) {
-      //   console.log("This will run after 10 seconds!");
 
-      //   if (navigator.geolocation) {
-      //     navigator.geolocation.watchPosition(
-      //       (position) => {
-      //         const { latitude, longitude } = position.coords;
-      //         setCurrentLocation({ lat: latitude, lng: longitude });
-      //         console.log({ lat: latitude, lng: longitude });
-      //       },
-      //       (error) => {
-      //         console.error("Error getting user location:", error);
-      //       }
-      //     );
-      //   } else {
-      //     console.log("Geolocation is not supported by this browser.");
-      //   }
-      // }
+      // Geolocation.getCurrentPosition(
+      //   (position) => {
+      //     const { latitude, longitude } = position.coords;
+      //     setCurrentLocation({ lat: latitude, lng: longitude });
+      //     console.log({ lat: latitude, lng: longitude });
+      //   },
+      //   (error) => {
+      //     console.error("Error getting current location:", error);
+      //   },
+      //   { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      // );
 
-      Geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setCurrentLocation({ lat: latitude, lng: longitude });
-          console.log({ lat: latitude, lng: longitude });
-        },
-        (error) => {
-          console.error("Error getting current location:", error);
-        },
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-      );
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          setCurrentLocation({ lat:position.coords.latitude, lng:position.coords.longitude });
+          console.log(position.coords);
+        });
+      }
 
-      // async function getCurrentLocation() {
-      //   const ipAddressResponse = await fetch('https://api.ipify.org?format=json');
-      //   const { ip } = await ipAddressResponse.json();
-      
-      //   const locationResponse = await fetch(`https://geoipify.whoisxmlapi.com/api/v1?apiKey=${apiKey}&ip=${ip}`);
-      //   const { location } = await locationResponse.json();
-      
-      //   console.log('Current location:', location);
-      // }
-      
-
-
-    }, 10000);
+    }, 5000);
     //   return () => clearInterval(timer);
   }, []);
 
@@ -80,7 +69,7 @@ const Descopera = () => {
   //   setInterval(() => {
   //     if (user?.preferinte !== null) {
   //       console.log("This will run after 10 seconds!");
-  
+
   //       if (navigator.geolocation) {
   //         const positionOptions = {
   //           enableHighAccuracy: true,
@@ -88,7 +77,7 @@ const Descopera = () => {
   //           maximumAge: 0,
   //           travelMode: 'walking'
   //         };
-  
+
   //         navigator.geolocation.watchPosition(
   //           (position) => {
   //             const { latitude, longitude } = position.coords;
@@ -107,7 +96,6 @@ const Descopera = () => {
   //   }, 10000);
   //   //   return () => clearInterval(timer);
   // }, []);
-  
 
   useEffect(() => {
     if (user?.preferinte.length < 1) {
@@ -131,7 +119,10 @@ const Descopera = () => {
     setShowModal2(false);
     navigate("/");
   };
-
+  const handleCloseModal3 = () => {
+    setShowModal3(false);
+    navigate("/");
+  };
   const handleGoToPreferences = () => {
     setShowModal1(false);
     navigate("/profilulMeu/preferinte");
@@ -145,39 +136,110 @@ const Descopera = () => {
     navigate("/register");
   };
 
-  const predict = async() =>{
+  const predict = async () => {
     try {
-      const resp1 = await getPlacesByID(user.id, currentLocation.lat, currentLocation.lng, 500, user.preferinte)
-      if(resp1.status === 200)
-      {
-        console.log(resp1);
+      let string = "";
+      if(listaPreferintePrioritizate!==null){
+        listaPreferintePrioritizate.map((ls)=>
+        string=string+ls+" "
+        )
+      }
+      console.log(string);
+      const resp1 = await getPlacesByID(
+        user.id,
+        currentLocation.lat,
+        currentLocation.lng,
+        1000,
+        listaPreferintePrioritizate !== null ? string : user.preferinte
+      );
+      if (resp1.status === 200) {
+        // console.log(resp1);
         try {
-          const resp2 = await getPredictiePersoanaByID(user.id, currentLocation.lat, currentLocation.lng)
-          if(resp2.status === 200)
-          {
+          const resp2 = await getPredictiePersoanaByID(
+            user.id,
+            currentLocation.lat,
+            currentLocation.lng
+            );
             console.log(resp2);
+          if (resp2.status === 200) {
+            setPredictLocationPoze(resp2.data);
+            setPredictieIgnorata(resp2.data);
             try {
-              const resp3 = await getGeocodingOfAddress(resp2.data + " Romania")
-              if(resp3.status === 200)
-              {
+              const resp3 = await getGeocodingOfAddress(
+                resp2.data + "Suceava Romania"
+              );
+              if (resp3.status === 200) {
                 console.log(resp3);
                 // setPredictLocation(resp3.data[0].geometry.location)
-                setPredictLocation(resp3.data.results[0].formatted_address)
-                console.log(resp3.data.results[0].formatted_address)
-                
+                setPredictLocation(
+                  resp2.data + " " + resp3.data.results[0].formatted_address
+                );
+                // console.log(resp3.data.results[0].formatted_address)
               }
-            } catch (error) {
-              
+            } catch (error) {}
+          }
+        } catch (error) {}
+      }
+    } catch (error) {}
+  };
+
+  const repredict = async () => {
+    try {
+      const resp1 = await putScoateUnLocDinPreditcie(
+        user.id,
+        predictieIgnorata
+      );
+      if (resp1.status === 200) {
+        console.log(resp1);
+        try {
+          const resp2 = await getPredictiePersoanaByID(
+            user.id,
+            currentLocation.lat,
+            currentLocation.lng
+          );
+          if (resp2.status === 200) {
+            console.log(resp2);
+            if (resp2.data === "") {
+              setShowModal3(true)
+            } else {
+              try {
+                const resp3 = await getGeocodingOfAddress(
+                  resp2.data + " Suceava Romania"
+                );
+                setPredictLocationPoze(resp2.data);
+                setPredictieIgnorata(resp2.data);
+                if (resp3.status === 200) {
+                  console.log(resp3);
+                  // setPredictLocation(resp3.data[0].geometry.location)
+                  setPredictLocation(
+                    resp2.data + " " + resp3.data.results[0].formatted_address
+                  );
+                  console.log(resp3.data.results[0].formatted_address);
+                }
+              } catch (error) {}
             }
           }
-        } catch (error) {
-          
-        }
+        } catch (error) {}
       }
-    } catch (error) {
-      
-    }
-  }
+    } catch (error) {}
+  };
+
+  const predictListaApropiere = async () => {
+    try {
+      const resp1 = await getPlacesByID(
+        user.id,
+        currentLocation.lat,
+        currentLocation.lng,
+        1000,
+        user.preferinte
+      );
+      if (resp1.status === 200) {
+        console.log(resp1);
+      }
+    } catch (error) {}
+  };
+
+  
 
   return (
     <div className={styles.descoperaContainer}>
@@ -185,13 +247,36 @@ const Descopera = () => {
         <>
           {user?.preferinte.length > 0 ? (
             <>
+            {/* {console.log('LOCATIE \n\n\n',currentLocation)} */}
               <MapContainer
                 center={currentLocation}
                 zoom={15}
                 currentLocation={currentLocation}
                 predict={predict}
-                predictLocation={predictLocaion}
+                repredict={repredict}
+                predictLocation={predictLocation}
+                predictLocationPoze={predictLocationPoze}
+                predictListaApropiere={predictListaApropiere}
               />
+                <Modal show={showModal3}>
+                <Modal.Header
+                  closeButton
+                  className="d-flex justify-content-center"
+                  onHide={handleCloseModal3}
+                >
+                  <Modal.Title>
+                    Aceasta a fost ultimul obiectiv conform recomandarii noastre
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Footer className="d-flex justify-content-center">
+                  <Button variant="dark"
+                  onClick={() => 
+                    {predict();
+                    setShowModal3(false)}}>
+                    Repredict
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </>
           ) : (
             <>
@@ -247,6 +332,7 @@ const Descopera = () => {
           </Modal>
         </>
       )}
+      
     </div>
   );
 };

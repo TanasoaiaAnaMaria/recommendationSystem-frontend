@@ -16,104 +16,11 @@ const Notifications = () => {
   const { user, fetchUser } = useAuth();
 
   // state provider
-  const { setAlert } = useStateProvider();
+  const { setAlert, preferinteUserProfil, setPreferinteUserProfil } = useStateProvider();
 
   // current modal
   const [currentModal, setCurrentModal] = useState("atractiiNaturale");
   let preferinte = "";
-
-  const [formValue, setFormValue] = useState({
-    atractiiNaturale: {
-      park: {
-        label: "Parcuri",
-        value: "park",
-        checked: "0",
-      },
-      garden: {
-        label: "Gradini",
-        value: "garden",
-        checked: "0",
-      },
-      campground: {
-        label: "Camping",
-        value: "campground",
-        checked: "0",
-      },
-      zoo: {
-        label: "Zoo",
-        value: "zoo",
-        checked: "0",
-      },
-    },
-    cultura: {
-      library: {
-        label: "Librarii",
-        value: "library",
-        checked: "0",
-      },
-      university: {
-        label: "Universitati",
-        value: "university",
-        checked: "0",
-      },
-      theater: {
-        label: "Teatre",
-        value: "theater",
-        checked: "0",
-      },
-      museum: {
-        label: "Muzee",
-        value: "museum",
-        checked: "0",
-      },
-      art_galery: {
-        label: "Galerii de arta",
-        value: "art_galery",
-        checked: "0",
-      },
-      church: {
-        label: "Biserici",
-        value: "church",
-        checked: "0",
-      },
-    },
-
-    gastronomie: {
-      bakery: {
-        label: "Brutarii / Patiserii",
-        value: "bakery",
-        checked: "0",
-      }, // nu bakery?
-      restaurants: {
-        label: "Restaurante",
-        value: "restaurants",
-        checked: "0",
-      },
-    },
-
-    divertisment: {
-      amusement_park: {
-        label: "Parcuri de distractie",
-        value: "amusement_park",
-        checked: "0",
-      },
-      bar: {
-        label: "Pub / Bar",
-        value: "bar",
-        checked: "0",
-      },
-      casino: {
-        label: "Casino",
-        value: "casino",
-        checked: "0",
-      },
-      movie: {
-        label: "Cinema",
-        value: "movie",
-        checked: "0",
-      },
-    },
-  });
 
   const stringFromBackend = user?.preferinte;
 
@@ -121,7 +28,7 @@ const Notifications = () => {
     if (stringFromBackend) {
       const valuesToCheck = stringFromBackend.split(" ");
 
-      setFormValue((prevState) => {
+      setPreferinteUserProfil((prevState) => {
         const newState = { ...prevState };
 
         Object.keys(newState).forEach((category) => {
@@ -181,7 +88,7 @@ const Notifications = () => {
   };
 
   function handleSwitchChange(modal, valueName, isChecked) {
-    setFormValue((prevState) => {
+    setPreferinteUserProfil((prevState) => {
       const newState = { ...prevState };
       newState[modal][valueName].checked = isChecked ? "1" : "0";
       return newState;
@@ -189,7 +96,7 @@ const Notifications = () => {
   }
 
   useEffect(() => {
-    Object.values(formValue).forEach((values) => {
+    Object.values(preferinteUserProfil).forEach((values) => {
       Object.values(values).forEach((val) => {
         if (val.checked === "1") {
           preferinte = preferinte + val.value + " ";
@@ -199,7 +106,7 @@ const Notifications = () => {
     // const time = setTimeout(updatePersoana(), 1000);
     // clearTimeout(time);
     updatePersoana();
-  }, [formValue]);
+  }, [preferinteUserProfil]);
 
 
   const updatePersoana = async () => {
@@ -245,7 +152,7 @@ const Notifications = () => {
   return (
     <>
       <div>
-        <h4 className={styles.title}>Notifications</h4>
+        <h4 className={styles.title}>Preferinte</h4>
         <RowItem
           title="Atractii naturale"
           info={"Selecteaza preferinte"}
@@ -277,7 +184,7 @@ const Notifications = () => {
         show={show}
         onHide={handleModalHide}
         currentModal={currentModal}
-        formValue={formValue}
+        preferinteUserProfil={preferinteUserProfil}
         onSwitchChange={handleSwitchChange}
       />
     </>

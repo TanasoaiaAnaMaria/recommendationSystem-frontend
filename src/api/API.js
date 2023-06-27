@@ -87,6 +87,16 @@ export const getPlacesByID = async (id, lat, lng, radius, params) => {
   }
 };
 
+
+export const putScoateUnLocDinPreditcie= async (id, params) => {
+  try {
+    const response = await axios.put("/persoana/schimbaPredictia/" + id + '?cuvant=' + params );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getPredictiePersoanaByID = async (id, lat, lng) => {
   try {
     const response = await axios.get("/persoana/predictie/" + id + '?latitudine=' + lat + '&longitudine=' + lng );
@@ -113,3 +123,13 @@ export const getNameOfAddress = async (lat, lng) => {
     console.error(error);
   }
 };
+
+export const getImaginiObiectiv = async (nume) => {
+  try {
+    const response = await axios.get("/placeImages?placeName=" + nume );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+

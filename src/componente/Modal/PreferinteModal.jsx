@@ -11,7 +11,7 @@ const PreferinteModal = ({
   onHide,
   title,
   description,
-  formValue,
+  preferinteUserProfil,
   currentModal,
   onSwitchChange,
   // checkedEmail,
@@ -23,13 +23,13 @@ const PreferinteModal = ({
   // If there's no currentModal, return null or some fallback UI.
   if (!currentModal) return null;
 
-  // Check if the currentModal key exists in formValue.
-  if (!formValue.hasOwnProperty(currentModal)) {
-    console.log(`Key ${currentModal} does not exist in formValue.`);
+  // Check if the currentModal key exists in preferinteUserProfil.
+  if (!preferinteUserProfil.hasOwnProperty(currentModal)) {
+    console.log(`Key ${currentModal} does not exist in preferinteUserProfil.`);
     return null;
   }
 
-  const currentValues = formValue[currentModal];
+  const currentValues = preferinteUserProfil[currentModal];
 
   // Check if currentValues is undefined or null.
   if (!currentValues) {
