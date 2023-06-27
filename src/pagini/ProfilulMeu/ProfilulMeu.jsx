@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { ReactComponent as ProfileIcon } from "../../assets/icons/person.svg";
 import { ReactComponent as SecuritateIcon } from "../../assets/icons/security.svg";
 import { MdOutlineTravelExplore } from "react-icons/md";
+import { PiCastleTurretFill } from "react-icons/pi";
 import { ReactComponent as BellIcon } from "../../assets/icons/bell.svg";
 import { ReactComponent as ChatIcon } from "../../assets/icons/chat.svg";
 import { ReactComponent as LogoutIcon } from "../../assets/icons/logout.svg";
@@ -16,6 +17,7 @@ import { ReactComponent as DeleteIcon } from "../../assets/icons/delete.svg";
 import Profil from "./Profil/Profil";
 import Securitate from "./Securitate/Securitate";
 import Preferinte from "./Preferinte/Preferinte";
+import Recomandari from "./Recomandari/Recomandari";
 
 // styles
 import styles from "./ProfilulMeu.module.scss";
@@ -44,6 +46,8 @@ const ProfilulMeu = () => {
         return <Securitate />;
       case "preferinte":
         return <Preferinte />;
+      case "recomandari":
+        return <Recomandari />;
       default:
         break;
     }
@@ -158,8 +162,16 @@ const ProfilulMeu = () => {
             className={currentTab === "preferinte" ? styles.active : ""}
             onClick={() => navigate("/profilulMeu/preferinte")}
           >
-            <MdOutlineTravelExplore size={'25px'} fill={'black'}/>
+            <MdOutlineTravelExplore size={"25px"} fill={"black"} />
             <span>Preferinte</span>
+          </button>
+
+          <button
+            className={currentTab === "recomandari" ? styles.active : ""}
+            onClick={() => navigate("/profilulMeu/recomandari")}
+          >
+            <PiCastleTurretFill size={"25px"} fill={"black"} />
+            <span>Recomandări</span>
           </button>
           <button onClick={handleLogout}>
             <LogoutIcon />

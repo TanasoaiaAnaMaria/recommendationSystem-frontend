@@ -40,6 +40,7 @@ function App() {
             <Route path="profil" element={<ProfilulMeu />} />
             <Route path="securitate" element={<ProfilulMeu />} />
             <Route path="preferinte" element={<ProfilulMeu />} />
+            <Route path="recomandari" element={<ProfilulMeu />} />
           </Route>
         </Route>
 

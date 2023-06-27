@@ -143,6 +143,13 @@ const Navigare = (props) => {
                       >
                         Preferinte
                       </NavDropdown.Item>
+                      {user.rol === 'Admin'}
+                      <NavDropdown.Item
+                        className={`${styles.hello}`}
+                        href="/profilulMeu/recomandari"
+                      >
+                        Recomandări
+                      </NavDropdown.Item>
 
                       <NavDropdown.Divider />
 

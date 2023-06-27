@@ -133,3 +133,12 @@ export const getImaginiObiectiv = async (nume) => {
   }
 };
 
+export const getRecomandariAcasa = async () => {
+  try {
+    const response = await axios.get("/recomandari" );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+

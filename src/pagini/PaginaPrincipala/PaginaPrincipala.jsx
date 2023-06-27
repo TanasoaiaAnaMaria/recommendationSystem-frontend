@@ -5,6 +5,7 @@ import DespreNoi from "../../componente/DespreNoi/DespreNoi.jsx";
 import MapContainer from "../../componente/Harta/MapContainer.jsx";
 
 import styles from './PaginaPrincipala.module.scss';
+import Recomandari from "../../componente/Recomandari/Recomandari.jsx";
 
 const PaginaPrincipala = () => {
 
@@ -14,6 +15,7 @@ const PaginaPrincipala = () => {
     <div className={styles.bodyContainer}>
       <Banner />
       <DespreNoi />
+      <Recomandari />
       {/* <MapContainer center={center} zoom={4.5}></MapContainer> */}
     </div>
   );
